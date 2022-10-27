@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: azari <azari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/25 15:04:16 by azari             #+#    #+#             */
-/*   Updated: 2022/10/27 08:22:09 by azari            ###   ########.fr       */
+/*   Created: 2022/10/26 17:38:55 by azari             #+#    #+#             */
+/*   Updated: 2022/10/27 08:24:58 by azari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*my_line(int fd, char *buffer, char *adv)
 {
@@ -20,8 +20,8 @@ char	*my_line(int fd, char *buffer, char *adv)
 	n = 1;
 	while (n != 0 && !ft_strchr(buffer, '\n'))
 	{
-		n = read(fd, buffer, BUFFER_SIZE); // 0
-		if (n == -1)
+		n = read(fd, buffer, BUFFER_SIZE);
+		if (n < 0)
 		{
 			free(buffer);
 			return (NULL);
@@ -66,7 +66,7 @@ void	new_adv(char **x)
 
 char	*get_next_line(int fd)
 {
-	static char	*adv;
+	static char	*adv[10240];
 	char		*buffer;
 	char		*rslt;
 
@@ -75,20 +75,20 @@ char	*get_next_line(int fd)
 	buffer = (char *)malloc(BUFFER_SIZE + 1);
 	if (!buffer)
 	{
-		free(adv);
+		free(adv[fd]);
 		return (NULL);
 	}
 	buffer[0] = '\0';
-	adv = my_line(fd, buffer, adv);
-	if (!adv)
+	adv[fd] = my_line(fd, buffer, adv[fd]);
+	if (!adv[fd])
 		return (NULL);
-	if (!*adv)
+	if (!*adv[fd])
 	{
-		free(adv);
-		adv = 0;
+		free(adv[fd]);
+		adv[fd] = 0;
 		return (NULL);
 	}
-	rslt = full_line(adv);
-	new_adv(&adv);
+	rslt = full_line(adv[fd]);
+	new_adv(&adv[fd]);
 	return (rslt);
 }
