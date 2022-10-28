@@ -6,48 +6,24 @@
 /*   By: azari <azari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 15:04:16 by azari             #+#    #+#             */
-/*   Updated: 2022/10/27 08:22:09 by azari            ###   ########.fr       */
+/*   Updated: 2022/10/27 14:40:14 by azari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*my_line(int fd, char *buffer, char *adv)
-{
-	char	*str;
-	ssize_t	n;
 
-	n = 1;
-	while (n != 0 && !ft_strchr(buffer, '\n'))
-	{
-		n = read(fd, buffer, BUFFER_SIZE); // 0
-		if (n == -1)
-		{
-			free(buffer);
-			return (NULL);
-		}
-		buffer[n] = '\0';
-		str = ft_strjoin(adv, buffer);
-		free(adv);
-		adv = str;
-	}
-	free(buffer);
-	return (adv);
-}
-
-char	*full_line(char *adv)
+static char	*full_line(char *adv)
 {
 	size_t	i;
-	char	*rslt;
 
 	i = 0;
 	while (adv[i] && adv[i] != '\n')
 		i++;
-	rslt = ft_substr(adv, 0, i + 1);
-	return (rslt);
+	return (ft_substr(adv, 0, i + 1));
 }
 
-void	new_adv(char **x)
+static void	new_adv(char **x)
 {
 	size_t	i;
 	char	*nadv;
@@ -62,6 +38,29 @@ void	new_adv(char **x)
 	nadv = ft_substr(adv, i, ft_strlen(adv + i));
 	free(adv);
 	*x = nadv;
+}
+
+static char	*my_line(int fd, char *buffer, char *adv)
+{
+	char	*str;
+	ssize_t	n;
+
+	n = 1;
+	while (n != 0 && !ft_strchr(buffer, '\n'))
+	{
+		n = read(fd, buffer, BUFFER_SIZE);
+		if (n == -1)
+		{
+			free(buffer);
+			return (NULL);
+		}
+		buffer[n] = '\0';
+		str = ft_strjoin(adv, buffer);
+		free(adv);
+		adv = str;
+	}
+	free(buffer);
+	return (adv);
 }
 
 char	*get_next_line(int fd)

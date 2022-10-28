@@ -6,13 +6,13 @@
 /*   By: azari <azari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 17:38:55 by azari             #+#    #+#             */
-/*   Updated: 2022/10/27 08:24:58 by azari            ###   ########.fr       */
+/*   Updated: 2022/10/27 14:00:28 by azari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-char	*my_line(int fd, char *buffer, char *adv)
+static char	*my_line(int fd, char *buffer, char *adv)
 {
 	char	*str;
 	ssize_t	n;
@@ -35,7 +35,7 @@ char	*my_line(int fd, char *buffer, char *adv)
 	return (adv);
 }
 
-char	*full_line(char *adv)
+static char	*full_line(char *adv)
 {
 	size_t	i;
 	char	*rslt;
@@ -47,7 +47,7 @@ char	*full_line(char *adv)
 	return (rslt);
 }
 
-void	new_adv(char **x)
+static void	new_adv(char **x)
 {
 	size_t	i;
 	char	*nadv;
