@@ -6,11 +6,11 @@
 /*   By: azari <azari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 15:04:16 by azari             #+#    #+#             */
-/*   Updated: 2022/10/30 21:51:02 by azari            ###   ########.fr       */
+/*   Updated: 2022/10/30 21:54:30 by azari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "get_next_line.h"
+#include "get_next_line.h"
 
 
 static char	*full_line(char *adv)
